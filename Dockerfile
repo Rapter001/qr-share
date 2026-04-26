@@ -11,4 +11,4 @@ EXPOSE 5000
 
 ENV APP_VERSION=1.0.0
 
-CMD ["python", "main.py"]
+CMD ["python3", "main.py"]
