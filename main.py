@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 2592000  # Cache static files for 30 days
 app.config["TEMPLATES_AUTO_RELOAD"] = False
-app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key-change-in-production")
+app.secret_key = os.environ.get("SECRET_KEY", "q#y&g2^**X4R9h")
 
 UPLOAD_FOLDER = "static/uploads"
 QR_FOLDER = "static/qr"
@@ -21,8 +21,8 @@ QR_FOLDER = "static/qr"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "pdf"}
 
 # Get credentials from environment
-USERNAME = os.environ.get("APP_USERNAME", "admin")
-PASSWORD = os.environ.get("APP_PASSWORD", "password")
+USERNAME = os.environ.get("APP_USERNAME")
+PASSWORD = os.environ.get("APP_PASSWORD")
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(QR_FOLDER, exist_ok=True)
