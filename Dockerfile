@@ -5,10 +5,10 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app.py .
+COPY . .
 
 EXPOSE 5000
 
 ENV APP_VERSION=1.0.0
 
-CMD ["python", "main.py"]
+CMD ["python3", "main.py"]
