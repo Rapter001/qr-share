@@ -4,18 +4,30 @@
     box-sizing: border-box;
 }
 
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+html {
+    font-size: 16px;
+}
+
 body {
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     background: linear-gradient(135deg, #0f172a, #020617);
     color: #e2e8f0;
     min-height: 100vh;
+
+    /* FIX: prevents zoomed floating card issue */
     display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 20px;
+    align-items: flex-start;
+
+    padding: clamp(12px, 2vw, 24px);
 }
 
-/* ===== Container Card ===== */
+/* ===== Container ===== */
 .container {
     width: 100%;
     max-width: 520px;
@@ -23,29 +35,27 @@ body {
     backdrop-filter: blur(12px);
     border: 1px solid rgba(148, 163, 184, 0.15);
     border-radius: 18px;
-    padding: 32px;
+    padding: clamp(18px, 3vw, 36px);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     text-align: center;
 }
 
 /* ===== Headings ===== */
 h1 {
-    font-size: 1.8rem;
-    font-weight: 700;
+    font-size: clamp(1.4rem, 2.2vw, 1.9rem);
     margin-bottom: 10px;
-    letter-spacing: 0.3px;
 }
 
 h3 {
     margin-top: 20px;
-    font-size: 1.1rem;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
     color: #cbd5f5;
 }
 
 /* ===== Text ===== */
 p {
     color: #94a3b8;
-    font-size: 0.95rem;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
     margin-bottom: 15px;
 }
 
@@ -56,109 +66,100 @@ a {
     word-break: break-word;
 }
 
-a:hover {
-    text-decoration: none !important;
-}
-
-/* ===== File Input ===== */
-input[type="file"] {
-    width: 100%;
-    padding: 16px;
-    margin-top: 20px;
-    background: rgba(11, 18, 32, 0.6);
-    border: 2px solid rgba(56, 189, 248, 0.3);
-    border-radius: 14px;
-    color: #cbd5f5;
-    cursor: pointer;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-    accent-color: #2563eb;
-}
-
-input[type="file"]:hover {
-    background: rgba(11, 18, 32, 0.8);
-    border-color: rgba(56, 189, 248, 0.5);
-}
-
-input[type="file"]:focus {
-    outline: none;
-    background: rgba(11, 18, 32, 1);
-    border-color: #38bdf8;
-}
-
 /* ===== Form ===== */
 form {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    margin: 20px 0;
 }
 
-/* ===== Button ===== */
+/* ===== File input ===== */
+input[type="file"] {
+    width: 100%;
+    padding: clamp(12px, 2vw, 16px);
+    background: rgba(11, 18, 32, 0.6);
+    border: 2px solid rgba(56, 189, 248, 0.3);
+    border-radius: 14px;
+    color: #cbd5f5;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
+    transition: border-color 0.3s ease;
+}
+
+input[type="file"]:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+}
+
+/* ===== Buttons ===== */
 button {
     width: 100%;
-    margin-top: 10px;
-    padding: 16px;
+    padding: clamp(12px, 2vw, 16px);
     border: none;
     border-radius: 12px;
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
     font-weight: 600;
     color: white;
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
     cursor: pointer;
-    text-decoration: none;
     transition: all 0.3s ease;
-    box-shadow: none;
-    letter-spacing: 0.5px;
 }
 
 button:hover {
     transform: translateY(-2px);
-    text-decoration: none;
-    filter: brightness(1.1);
 }
 
-button:active {
-    transform: scale(0.98);
-}
-
-button:focus {
-    outline: none;
-}
-
-/* ===== Button Variants ===== */
-.btn,
-button {
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
+/* ===== Button styles for links ===== */
 .btn {
-    padding: 12px 18px;
+    display: inline-block;
+    padding: clamp(10px, 1.5vw, 14px) clamp(16px, 2.5vw, 20px);
+    border: none;
     border-radius: 12px;
-    text-decoration: none;
+    font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+    font-weight: 600;
     color: white;
-    background: #2563eb;
-    transition: all 0.2s ease;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    text-decoration: none;
     cursor: pointer;
-    box-shadow: none;
+    transition: all 0.3s ease;
+    text-align: center;
+    min-width: 120px;
 }
 
 .btn:hover {
-    transform: translateY(-1px);
-    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
 }
 
 .btn.secondary {
-    background: rgba(148, 163, 184, 0.2);
-    color: #e2e8f0;
-    border: 1px solid rgba(148, 163, 184, 0.3);
-    text-decoration: none;
+    background: rgba(56, 189, 248, 0.12);
+    border: 2px solid rgba(56, 189, 248, 0.3);
+    color: #38bdf8;
 }
 
-/* ===== Button Layout ===== */
+.btn.secondary:hover {
+    background: rgba(56, 189, 248, 0.2);
+    border-color: rgba(56, 189, 248, 0.5);
+}
+
+/* ===== Card actions ===== */
+.card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.card-actions .btn {
+    flex: 1;
+    min-width: 100px;
+    padding: clamp(8px, 1.2vw, 10px) clamp(12px, 1.8vw, 16px);
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
+}
+
+/* ===== Button row ===== */
 .button-row {
     display: flex;
     flex-wrap: wrap;
@@ -167,7 +168,7 @@ button {
     margin: 22px 0;
 }
 
-/* ===== Link Button ===== */
+/* ===== Link button ===== */
 .link-button {
     display: inline-block;
     margin-top: 20px;
@@ -176,136 +177,173 @@ button {
     background: rgba(56, 189, 248, 0.12);
     border: 2px solid rgba(56, 189, 248, 0.3);
     color: #38bdf8;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-weight: 500;
 }
 
-.link-button:hover {
-    background: rgba(56, 189, 248, 0.22);
-    border-color: rgba(56, 189, 248, 0.6);
-    transform: translateY(-2px);
-    text-decoration: none;
-}
-
-.link-button:focus {
-    outline: none;
-}
-
-/* ===== QR Image ===== */
+/* ===== Images ===== */
 img {
     margin-top: 15px;
-    width: 180px;
-    height: 180px;
+    width: clamp(120px, 20vw, 180px);
+    height: auto;
+    max-width: 100%;
     border-radius: 12px;
-    border: 1px solid rgba(148, 163, 184, 0.2);
     background: white;
     padding: 10px;
 }
 
-/* ===== Uploads Grid ===== */
-.uploads-grid {
-    display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    margin-top: 20px;
-    text-align: left;
+/* ===== File preview embed ===== */
+.file-preview-embed {
+    width: 100%;
+    height: clamp(300px, 40vh, 500px);
+    border: none;
+    border-radius: 12px;
+    background: white;
 }
 
+/* ===== Preview note ===== */
+.preview-note {
+    color: #94a3b8;
+    font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+    margin: 12px 0;
+    font-style: italic;
+}
+
+/* ===== Upload name ===== */
+.upload-name {
+    color: #e2e8f0;
+    font-size: clamp(0.9rem, 1.2vw, 1rem);
+    font-weight: 500;
+    margin: 8px 0;
+    word-break: break-word;
+}
+
+/* ===== Upload Grid ===== */
+.uploads-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    margin-top: 20px;
+}
+
+/* ===== Cards ===== */
 .upload-card {
     background: rgba(15, 23, 42, 0.95);
     border: 1px solid rgba(148, 163, 184, 0.15);
     border-radius: 18px;
-    padding: 18px;
-    transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.upload-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(59, 130, 246, 0.35);
-}
-
-.upload-card h2 {
-    font-size: 1rem;
-    margin-bottom: 12px;
-    color: #e2e8f0;
-}
-
-.upload-card p {
-    color: #94a3b8;
-    margin-bottom: 12px;
-    font-size: 0.95rem;
-}
-
-.upload-card img {
-    width: 100%;
-    max-width: 220px;
-    height: auto;
-    display: block;
-    margin: 0 auto 16px;
-    border-radius: 14px;
-    padding: 10px;
-    background: white;
+    padding: 16px;
 }
 
 /* ===== Preview ===== */
 .file-preview {
-    margin-top: 20px;
-    margin-bottom: 16px;
+    margin: 16px 0;
 }
 
 .file-preview img {
     width: 100%;
-    border-radius: 16px;
-    max-height: 260px;
+    max-height: clamp(200px, 30vh, 400px);
     object-fit: contain;
     background: white;
     padding: 12px;
-}
-
-.file-preview-embed {
-    width: 100%;
-    min-height: 260px;
     border-radius: 16px;
     border: 1px solid rgba(148, 163, 184, 0.2);
-    background: white;
 }
 
-.preview-note {
-    color: #cbd5f5;
-    font-size: 0.95rem;
-    margin-top: 10px;
-}
-
-.card-actions {
-    display: grid;
-    gap: 10px;
-}
-
-/* ===== Mobile Optimization ===== */
+/* ===== MOBILE FIX ===== */
 @media (max-width: 600px) {
+    body {
+        padding: 12px;
+        align-items: stretch; /* KEY FIX */
+    }
+
     .container {
-        padding: 22px;
-        border-radius: 14px;
-    }
-
-    h1 {
-        font-size: 1.5rem;
-    }
-
-    img {
-        width: 150px;
-        height: 150px;
-    }
-}
-
-/* ===== Extra Small Devices ===== */
-@media (max-width: 400px) {
-    .container {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0;
         padding: 18px;
     }
 
+    .button-row {
+        flex-direction: column;
+    }
+
+    .card-actions {
+        flex-direction: column;
+    }
+
+    .card-actions .btn {
+        width: 100%;
+    }
+
     button {
-        font-size: 0.95rem;
+        width: 100%;
+    }
+
+    .uploads-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+}
+
+/* ===== TABLET FIX ===== */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .container {
+        max-width: 90vw;
+        padding: clamp(20px, 4vw, 32px);
+    }
+
+    .uploads-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    .card-actions {
+        gap: 10px;
+    }
+
+    .card-actions .btn {
+        flex: 1 1 auto;
+        min-width: 120px;
+    }
+}
+
+/* ===== VERY SMALL PHONES ===== */
+@media (max-width: 380px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 14px;
+    }
+
+    .file-preview-embed {
+        height: clamp(250px, 35vh, 400px);
+    }
+}
+
+/* ===== LARGE SCREENS ===== */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 600px;
+    }
+
+    .uploads-grid {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 24px;
+    }
+}
+
+/* ===== ULTRA-WIDE SCREENS ===== */
+@media (min-width: 2000px) {
+    .container {
+        max-width: 700px;
+    }
+
+    .uploads-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 28px;
+    }
+
+    html {
+        font-size: 18px;
     }
 }
