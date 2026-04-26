@@ -10,4 +10,4 @@ dist/
 *.swp
 *.tmp
 *.log
-static/files/
+static/files
