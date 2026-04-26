@@ -23,26 +23,22 @@
         <a href="{{ file_url }}" target="_blank">{{ file_url }}</a>
 
         {% if file_url.lower().endswith('.png') or file_url.lower().endswith('.jpg') or file_url.lower().endswith('.jpeg') %}
-            <div class="file-preview">
+            <div class="file-preview file-preview--success">
                 <img src="{{ file_url }}" alt="Uploaded file preview">
-            </div>
-        {% elif file_url.lower().endswith('.pdf') %}
-            <div class="file-preview">
-                <embed src="{{ file_url }}" type="application/pdf" class="file-preview-embed">
             </div>
         {% endif %}
 
         <h3>QR Code:</h3>
-        <img src="{{ qr_image }}" alt="QR Code">
+        <img class="qr-image" src="{{ qr_image }}" alt="QR Code">
 
         <div class="button-row">
             <a class="btn" href="{{ qr_image }}" download="qr-code.png">Download QR Code</a>
             <a class="btn secondary" href="/">View Gallery</a>
         </div>
 
-        <p>
-            <a href="/uploads">Upload another</a>
-        </p>
+        <div class="after-actions">
+            <a class="link-button" href="/uploads">Upload another</a>
+        </div>
     </div>
 </body>
 </html>

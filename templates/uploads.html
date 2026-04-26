@@ -5,26 +5,32 @@
     <link rel="stylesheet" href="/static/css/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
     <div class="container">
         <h1>Upload File</h1>
-        <p>Upload only PNG, JPG, JPEG, PDF files. A QR code will be generated for easy sharing.</p>
+        <p>Upload only PNG, JPG, JPEG files. A QR code will be generated for easy sharing.</p>
 
+        <!-- FLASH MESSAGES (MOVED ABOVE FORM = FIX) -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                {% for category, message in messages %}
-                    <div class="flash-message {{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+                <div class="flash-wrapper">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
             {% endif %}
         {% endwith %}
 
+        <!-- FORM -->
         <form action="/upload" method="post" enctype="multipart/form-data">
             <input type="file" name="file" required>
             <button type="submit">Upload</button>
         </form>
 
+        <!-- ACTION BUTTONS -->
         <div class="button-row">
             <a class="btn secondary" href="/">View Gallery</a>
             <a class="btn secondary" href="/logout">Logout</a>

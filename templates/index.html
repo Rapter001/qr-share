@@ -18,10 +18,6 @@
                             <div class="file-preview">
                                 <img src="{{ upload.file_url }}" alt="Preview of {{ upload.name }}">
                             </div>
-                        {% elif upload.name.lower().endswith('.pdf') %}
-                            <div class="file-preview">
-                                <embed src="{{ upload.file_url }}" type="application/pdf" class="file-preview-embed">
-                            </div>
                         {% else %}
                             <p class="preview-note">Preview not available for this file type.</p>
                         {% endif %}

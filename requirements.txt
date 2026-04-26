@@ -4,3 +4,4 @@ pillow
 werkzeug
 gunicorn
 python-dotenv
+fitz

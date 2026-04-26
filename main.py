@@ -11,16 +11,17 @@ load_dotenv()
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
-app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 2592000  # Cache static files for 30 days
+
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 2592000  # 30 days cache
 app.config["TEMPLATES_AUTO_RELOAD"] = False
 app.secret_key = os.environ.get("SECRET_KEY", "q#y&g2^**X4R9h")
 
-UPLOAD_FOLDER = "static/uploads"
-QR_FOLDER = "static/qr"
+# ✅ UPDATED FOLDERS (all under /static/files/)
+UPLOAD_FOLDER = "static/files/uploads"
+QR_FOLDER = "static/files/qr"
 
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "pdf"}
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 
-# Get credentials from environment
 USERNAME = os.environ.get("APP_USERNAME")
 PASSWORD = os.environ.get("APP_PASSWORD")
 
@@ -44,15 +45,18 @@ def allowed_file(filename):
 @app.route("/")
 def index():
     uploads = []
+
     for filename in sorted(os.listdir(UPLOAD_FOLDER), reverse=True):
         if not allowed_file(filename):
             continue
 
-        file_url = url_for("static", filename=f"uploads/{filename}", _external=False)
-        external_file_url = url_for("static", filename=f"uploads/{filename}", _external=True)
+        file_url = url_for("static", filename=f"files/uploads/{filename}")
+        external_file_url = url_for("static", filename=f"files/uploads/{filename}", _external=True)
+
         qr_name = f"{os.path.splitext(filename)[0]}.png"
         qr_path = os.path.join(QR_FOLDER, qr_name)
 
+        # Generate QR if missing
         if not os.path.exists(qr_path):
             qr_img = qrcode.make(external_file_url)
             with open(qr_path, "wb") as f:
@@ -61,7 +65,7 @@ def index():
         uploads.append({
             "name": filename,
             "file_url": file_url,
-            "qr_image": url_for("static", filename=f"qr/{qr_name}")
+            "qr_image": url_for("static", filename=f"files/qr/{qr_name}")
         })
 
     return render_template("index.html", uploads=uploads)
@@ -87,7 +91,7 @@ def login():
 def logout():
     session.pop('logged_in', None)
     flash("Logged out successfully!", "success")
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 
 @app.route("/uploads")
@@ -100,56 +104,58 @@ def uploads():
 @login_required
 def upload():
     if "file" not in request.files:
-        return "No file uploaded", 400
+        flash("No file uploaded.", "error")
+        return redirect(url_for("uploads"))
 
     file = request.files["file"]
 
     if not file or not file.filename:
-        return "No file selected", 400
+        flash("No file selected.", "error")
+        return redirect(url_for("uploads"))
 
-    filename = file.filename
+    if "." not in file.filename:
+        flash("Invalid file type. Please upload a PNG, JPG, or JPEG.", "error")
+        return redirect(url_for("uploads"))
 
-    if "." not in filename:
-        return "Invalid file type", 400
-
-    ext = filename.rsplit(".", 1)[1].lower()
+    ext = file.filename.rsplit(".", 1)[1].lower()
 
     if ext not in ALLOWED_EXTENSIONS:
-        return "Only PNG, JPG, JPEG, PDF allowed", 400
+        flash("Only PNG, JPG, and JPEG files are allowed.", "error")
+        return redirect(url_for("uploads"))
 
     random_name = f"{uuid.uuid4().hex}.{ext}"
     upload_path = os.path.join(UPLOAD_FOLDER, random_name)
 
     file.save(upload_path)
 
-    file_url = url_for("static", filename=f"uploads/{random_name}", _external=True)
+    file_url = url_for("static", filename=f"files/uploads/{random_name}", _external=True)
 
+    # QR generation
     qr_img = qrcode.make(file_url)
     qr_name = f"{os.path.splitext(random_name)[0]}.png"
     qr_path = os.path.join(QR_FOLDER, qr_name)
 
-    if not os.path.exists(qr_path):
-        with open(qr_path, "wb") as f:
-            qr_img.save(f)
+    with open(qr_path, "wb") as f:
+        qr_img.save(f)
 
     return render_template(
         "result.html",
         file_url=file_url,
-        qr_image=url_for("static", filename=f"qr/{qr_name}")
+        qr_image=url_for("static", filename=f"files/qr/{qr_name}")
     )
 
 
 @app.route("/delete/<filename>", methods=["POST"])
 @login_required
 def delete_file(filename):
-    # Delete the uploaded file
     file_path = os.path.join(UPLOAD_FOLDER, filename)
+
     if os.path.exists(file_path):
         os.remove(file_path)
 
-    # Delete the corresponding QR code
     qr_name = f"{os.path.splitext(filename)[0]}.png"
     qr_path = os.path.join(QR_FOLDER, qr_name)
+
     if os.path.exists(qr_path):
         os.remove(qr_path)
 

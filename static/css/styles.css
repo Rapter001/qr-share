@@ -10,6 +10,7 @@
 html, body {
     width: 100%;
     overflow-x: hidden;
+    min-height: 100%;
 }
 
 html {
@@ -17,7 +18,7 @@ html {
 }
 
 /* =========================
-   BODY BACKGROUND
+   BODY
 ========================= */
 body {
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -29,17 +30,17 @@ body {
 
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 
-    padding: 16px;
+    padding: clamp(12px, 2vw, 24px);
 }
 
 /* =========================
-   LOGIN CONTAINER
+   CONTAINER (RESPONSIVE CORE FIX)
 ========================= */
 .container {
     width: 100%;
-    max-width: 420px;
+    max-width: 980px;
 
     background: rgba(15, 23, 42, 0.85);
     backdrop-filter: blur(14px);
@@ -47,55 +48,44 @@ body {
     border: 1px solid rgba(148, 163, 184, 0.12);
     border-radius: 18px;
 
-    padding: 28px;
+    padding: clamp(16px, 3vw, 32px);
 
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
 
     text-align: center;
 }
 
+.container--narrow {
+    max-width: 420px;
+}
+
 /* =========================
-   TITLE
+   TEXT SCALING (RESPONSIVE)
 ========================= */
 h1 {
-    font-size: 1.8rem;
-    margin-bottom: 8px;
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    margin-bottom: 10px;
 }
 
-/* =========================
-   TEXT
-========================= */
+h3 {
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    margin: 16px 0 8px;
+}
+
 p {
     color: #94a3b8;
-    font-size: 0.95rem;
-    margin-bottom: 18px;
-    line-height: 1.4;
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    line-height: 1.5;
+    margin-bottom: 16px;
 }
 
-/* =========================
-   FLASH MESSAGES
-========================= */
-.flash-message {
-    padding: 10px 12px;
-    border-radius: 10px;
-    margin-bottom: 14px;
-
-    font-size: 0.9rem;
-    font-weight: 500;
-
-    border: 1px solid transparent;
+a {
+    color: #38bdf8;
+    text-decoration: none;
 }
 
-.flash-message.success {
-    background: rgba(34, 197, 94, 0.12);
-    border-color: rgba(34, 197, 94, 0.25);
-    color: #22c55e;
-}
-
-.flash-message.error {
-    background: rgba(239, 68, 68, 0.12);
-    border-color: rgba(239, 68, 68, 0.25);
-    color: #ef4444;
+a:hover {
+    text-decoration: underline;
 }
 
 /* =========================
@@ -105,61 +95,57 @@ form {
     display: flex;
     flex-direction: column;
     gap: 14px;
-    margin-top: 10px;
 }
 
 /* =========================
-   INPUT FIELDS (FIXED + MODERN)
+   INPUTS (FIXED RESPONSIVE)
 ========================= */
 input[type="text"],
 input[type="password"],
-input[type="email"] {
+input[type="email"],
+input[type="file"] {
     width: 100%;
 
-    padding: 14px 14px;
+    padding: 14px;
 
     border-radius: 12px;
-
     border: 1px solid rgba(148, 163, 184, 0.25);
 
     background: rgba(2, 6, 23, 0.85);
-
     color: #e2e8f0;
 
     font-size: 1rem;
 
     outline: none;
 
-    transition: all 0.2s ease;
-
-    /* makes input look real, not flat */
-    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+    transition: 0.2s ease;
 }
 
-/* placeholder */
 input::placeholder {
     color: rgba(148, 163, 184, 0.6);
 }
 
-/* focus state */
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="email"]:focus {
+input:focus {
     border-color: #38bdf8;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18);
+}
 
-    background: rgba(2, 6, 23, 0.95);
-
-    box-shadow:
-        0 0 0 3px rgba(56, 189, 248, 0.18),
-        inset 0 0 0 1px rgba(56, 189, 248, 0.2);
+/* file button */
+input[type="file"]::file-selector-button {
+    margin-right: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    background: rgba(15, 23, 42, 0.85);
+    color: #e2e8f0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
 }
 
 /* =========================
-   BUTTON
+   BUTTONS
 ========================= */
 button {
     width: 100%;
-
     padding: 14px;
 
     border: none;
@@ -169,12 +155,11 @@ button {
     font-weight: 600;
 
     color: white;
-
     background: linear-gradient(135deg, #3b82f6, #2563eb);
 
     cursor: pointer;
 
-    transition: all 0.2s ease;
+    transition: 0.2s ease;
 }
 
 button:hover {
@@ -182,57 +167,179 @@ button:hover {
     box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
 }
 
-button:active {
-    transform: translateY(0);
+/* =========================
+   GLOBAL IMAGE RULE (CRITICAL FIX)
+========================= */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
 /* =========================
-   NAV LINK
+   UPLOAD GRID (CENTERED + RESPONSIVE)
 ========================= */
-.nav-links {
-    margin-top: 16px;
+.uploads-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    width: 100%;
+    max-width: 720px;
+
+    margin: 0 auto;
+
+    max-height: 75vh;
+    overflow-y: auto;
+
+    padding-right: 6px;
 }
 
-.link-button {
-    display: inline-block;
+/* =========================
+   UPLOAD CARD (MODERN RESPONSIVE CARD)
+========================= */
+.upload-card {
+    background: rgba(2, 6, 23, 0.55);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 16px;
 
-    padding: 10px 14px;
+    padding: clamp(12px, 2vw, 18px);
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    text-align: center;
+}
+
+/* =========================
+   🔥 IMAGE FIX (THE REAL FIX)
+========================= */
+
+/* uploaded images */
+.upload-card img {
+    width: 100%;
+    max-width: 520px;
+    max-height: 320px;
+
+    object-fit: contain;
+
+    margin: 0 auto;
 
     border-radius: 12px;
 
-    background: rgba(56, 189, 248, 0.12);
-    border: 1px solid rgba(56, 189, 248, 0.25);
-
-    color: #38bdf8;
-    text-decoration: none;
-
-    font-weight: 500;
-
-    transition: 0.2s ease;
+    background: rgba(15, 23, 42, 0.3);
+    padding: 6px;
 }
 
-.link-button:hover {
-    background: rgba(56, 189, 248, 0.2);
-    transform: translateY(-2px);
+/* file preview */
+.file-preview {
+    width: 100%;
+    max-height: 320px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 14px;
+
+    background: rgba(15, 23, 42, 0.35);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.file-preview img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+}
+
+/* QR images */
+.qr-image {
+    width: clamp(120px, 30vw, 180px);
+    max-height: 180px;
+
+    object-fit: contain;
+
+    margin: 10px auto;
+
+    border-radius: 12px;
 }
 
 /* =========================
-   MOBILE FIX
+   CARD ACTIONS
+========================= */
+.card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    margin-top: 10px;
+}
+
+/* =========================
+   MOBILE OPTIMIZATION
 ========================= */
 @media (max-width: 480px) {
+
     body {
         align-items: stretch;
     }
 
     .container {
-        width: 100%;
         max-width: 100%;
+        padding: 16px;
         border-radius: 14px;
-        padding: 18px;
     }
 
-    input,
-    button {
-        font-size: 0.95rem;
+    .card-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .uploads-grid {
+        max-height: 70vh;
+    }
+}
+
+.flash-wrapper {
+    width: 100%;
+    margin-bottom: 14px;   /* pushes form down nicely */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.flash-message {
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-align: center;
+
+    animation: fadeIn 0.25s ease;
+}
+
+/* success */
+.flash-message.success {
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    color: #22c55e;
+}
+
+/* error */
+.flash-message.error {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    color: #ef4444;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
