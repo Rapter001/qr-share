@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Result</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Successful 🎉</h1>
+
+        <p>File Link:</p>
+        <a href="{{ file_url }}" target="_blank">{{ file_url }}</a>
+
+        {% if file_url.lower().endswith('.png') or file_url.lower().endswith('.jpg') or file_url.lower().endswith('.jpeg') %}
+            <div class="file-preview">
+                <img src="{{ file_url }}" alt="Uploaded file preview">
+            </div>
+        {% elif file_url.lower().endswith('.pdf') %}
+            <div class="file-preview">
+                <embed src="{{ file_url }}" type="application/pdf" class="file-preview-embed">
+            </div>
+        {% endif %}
+
+        <h3>QR Code:</h3>
+        <img src="{{ qr_image }}" alt="QR Code">
+
+        <div class="button-row">
+            <a class="btn" href="{{ qr_image }}" download="qr-code.png">Download QR Code</a>
+            <a class="btn secondary" href="/uploads">View all uploads</a>
+        </div>
+
+        <p>
+            <a href="/">Upload another</a>
+        </p>
+    </div>
+</body>
+</html>

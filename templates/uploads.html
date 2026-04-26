@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Uploaded Files</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Uploaded Content</h1>
+        <p>Browse all files shared through this app, with QR codes and quick actions.</p>
+
+        {% if uploads %}
+            <div class="uploads-grid">
+                {% for upload in uploads %}
+                    <div class="upload-card">
+                        {% if upload.name.lower().endswith('.png') or upload.name.lower().endswith('.jpg') or upload.name.lower().endswith('.jpeg') %}
+                            <div class="file-preview">
+                                <img src="{{ upload.file_url }}" alt="Preview of {{ upload.name }}">
+                            </div>
+                        {% elif upload.name.lower().endswith('.pdf') %}
+                            <div class="file-preview">
+                                <embed src="{{ upload.file_url }}" type="application/pdf" class="file-preview-embed">
+                            </div>
+                        {% else %}
+                            <p class="preview-note">Preview not available for this file type.</p>
+                        {% endif %}
+
+                        <img src="{{ upload.qr_image }}" alt="QR code for {{ upload.name }}">
+                        <p class="upload-name">{{ upload.name }}</p>
+
+                        <div class="card-actions">
+                            <a class="btn" href="{{ upload.qr_image }}" download="qr-{{ upload.name | replace('.', '_') }}.png">Download QR</a>
+                            <a class="btn" href="{{ upload.file_url }}" download="{{ upload.name }}">Download file</a>
+                            <a class="btn secondary" href="{{ upload.file_url }}" target="_blank">View file</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No uploads yet. Start by uploading a file.</p>
+        {% endif %}
+
+        <div class="button-row">
+            <a class="btn secondary" href="/">Upload another file</a>
+        </div>
+    </div>
+</body>
+</html>

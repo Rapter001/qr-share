@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Upload + QR</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>QR Code File Generator</h1>
+        <p>Upload only PNG, JPG, JPEG, PDF allowed</p>
+
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button type="submit">Upload</button>
+        </form>
+
+        <div class="nav-links">
+            <a class="link-button" href="/uploads">View all uploaded files</a>
+        </div>
+    </div>
+</body>
+</html>
