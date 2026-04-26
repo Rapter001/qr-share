@@ -9,6 +9,16 @@
     <div class="container">
         <h1>Upload Successful 🎉</h1>
 
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
         <p>File Link:</p>
         <a href="{{ file_url }}" target="_blank">{{ file_url }}</a>
 
@@ -27,11 +37,11 @@
 
         <div class="button-row">
             <a class="btn" href="{{ qr_image }}" download="qr-code.png">Download QR Code</a>
-            <a class="btn secondary" href="/uploads">View all uploads</a>
+            <a class="btn secondary" href="/">View Gallery</a>
         </div>
 
         <p>
-            <a href="/">Upload another</a>
+            <a href="/uploads">Upload another</a>
         </p>
     </div>
 </body>

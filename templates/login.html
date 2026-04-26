@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Upload File - QR Code File Generator</title>
+    <title>Login - QR Code File Generator</title>
     <link rel="stylesheet" href="/static/css/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
     <div class="container">
-        <h1>Upload File</h1>
-        <p>Upload only PNG, JPG, JPEG, PDF files. A QR code will be generated for easy sharing.</p>
+        <h1>Login</h1>
+        <p>Please login to access the upload functionality.</p>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -20,14 +20,14 @@
             {% endif %}
         {% endwith %}
 
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" required>
-            <button type="submit">Upload</button>
+        <form action="/login" method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
         </form>
 
-        <div class="button-row">
-            <a class="btn secondary" href="/">View Gallery</a>
-            <a class="btn secondary" href="/logout">Logout</a>
+        <div class="nav-links">
+            <a class="link-button" href="/">View Gallery</a>
         </div>
     </div>
 </body>
