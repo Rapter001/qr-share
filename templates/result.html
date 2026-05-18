@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>QR Result</title>
+    <title>Upload Result</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
+
 <body>
     <div class="container">
+
         <h1>Upload Successful 🎉</h1>
 
+        <!-- Flash messages -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -19,26 +22,51 @@
             {% endif %}
         {% endwith %}
 
-        <p>File Link:</p>
-        <a href="{{ file_url }}" target="_blank">{{ file_url }}</a>
+        <!-- File link -->
+        <div class="section">
+            <h3>File Link</h3>
+            <a class="file-link" href="{{ file_url }}" target="_blank">
+                {{ file_url }}
+            </a>
+        </div>
 
-        {% if file_url.lower().endswith('.png') or file_url.lower().endswith('.jpg') or file_url.lower().endswith('.jpeg') %}
-            <div class="file-preview file-preview--success">
-                <img src="{{ file_url }}" alt="Uploaded file preview">
-            </div>
-        {% endif %}
+        <!-- Preview (IMAGE ONLY) -->
+        <div class="section">
+            <h3>Preview</h3>
 
-        <h3>QR Code:</h3>
-        <img class="qr-image" src="{{ qr_image }}" alt="QR Code">
+            {% if preview_url %}
+                <div class="file-preview">
+                    <img src="{{ preview_url }}" alt="Uploaded image preview">
+                </div>
+            {% else %}
+                <p>No preview available</p>
+            {% endif %}
 
+        </div>
+
+        <!-- QR CODE -->
+        <div class="section">
+            <h3>QR Code</h3>
+            <img class="qr-image" src="{{ qr_image }}" alt="QR Code">
+        </div>
+
+        <!-- ACTION BUTTONS -->
         <div class="button-row">
-            <a class="btn" href="{{ qr_image }}" download="qr-code.png">Download QR Code</a>
-            <a class="btn secondary" href="/">View Gallery</a>
+            <a class="btn" href="{{ qr_image }}" download="qr-code.png">
+                Download QR Code
+            </a>
+
+            <a class="btn secondary" href="/">
+                View Gallery
+            </a>
         </div>
 
         <div class="after-actions">
-            <a class="link-button" href="/uploads">Upload another</a>
+            <a class="link-button" href="/uploads">
+                Upload Another File
+            </a>
         </div>
+
     </div>
 </body>
 </html>

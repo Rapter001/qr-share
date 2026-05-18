@@ -1,7 +1,8 @@
-flask
+Flask
+Flask-Limiter
+python-dotenv
 qrcode
 pillow
-werkzeug
-gunicorn
-python-dotenv
-fitz
+redis
+Werkzeug
+pymupdf

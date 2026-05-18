@@ -5,51 +5,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
-<body>
-    <div class="container">
-        <h1>QR Code File Gallery</h1>
-        <p>Browse all files shared through this app, with QR codes and quick actions.</p>
 
-        {% if uploads %}
-            <div class="uploads-grid">
-                {% for upload in uploads %}
-                    <div class="upload-card">
-                        {% if upload.name.lower().endswith('.png') or upload.name.lower().endswith('.jpg') or upload.name.lower().endswith('.jpeg') %}
-                            <div class="file-preview">
-                                <img src="{{ upload.file_url }}" alt="Preview of {{ upload.name }}">
-                            </div>
-                        {% else %}
-                            <p class="preview-note">Preview not available for this file type.</p>
+<body>
+
+<div class="container">
+
+    <h1>QR Code File Gallery</h1>
+    <p>Browse all uploaded images with QR codes and quick actions.</p>
+
+    {% if uploads %}
+
+        <div class="uploads-grid">
+
+            {% for upload in uploads %}
+
+                <div class="upload-card">
+
+                    <!-- IMAGE PREVIEW -->
+                    <div class="file-preview">
+                        <a href="{{ upload.file_url }}" target="_blank">
+                            <img src="{{ upload.file_url }}" alt="Preview of {{ upload.name }}">
+                        </a>
+                    </div>
+
+                    <!-- FILE NAME -->
+                    <p class="upload-name">{{ upload.name }}</p>
+
+                    <!-- QR CODE -->
+                    <img class="qr-image" src="{{ upload.qr_image }}" alt="QR code for {{ upload.name }}">
+
+                    <!-- ACTIONS -->
+                    <div class="card-actions">
+
+                        <a class="btn" href="{{ upload.qr_image }}"
+                           download="qr-{{ upload.name | replace('.', '_') }}.png">
+                            QR
+                        </a>
+
+                        <a class="btn secondary" href="{{ upload.file_url }}" download="{{ upload.name }}">
+                            Download
+                        </a>
+
+                        <a class="btn" href="{{ upload.file_url }}" target="_blank">
+                            View
+                        </a>
+
+                        {% if session.logged_in %}
+                            <form action="/delete/{{ upload.name }}" method="post"
+                                  onsubmit="return confirm('Are you sure you want to delete this file?')">
+
+                                <button type="submit" class="btn danger">
+                                    Delete
+                                </button>
+
+                            </form>
                         {% endif %}
 
-                        <img src="{{ upload.qr_image }}" alt="QR code for {{ upload.name }}">
-                        <p class="upload-name">{{ upload.name }}</p>
-
-                        <div class="card-actions">
-                            <a class="btn" href="{{ upload.qr_image }}" download="qr-{{ upload.name | replace('.', '_') }}.png">Download QR</a>
-                            <a class="btn" href="{{ upload.file_url }}" download="{{ upload.name }}">Download file</a>
-                            <a class="btn" href="{{ upload.file_url }}" target="_blank">View file</a>
-                            {% if session.logged_in %}
-                                <form action="/delete/{{ upload.name }}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this file?')">
-                                    <button type="submit" class="btn secondary" style="background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.3); color: #ef4444;">Delete</button>
-                                </form>
-                            {% endif %}
-                        </div>
                     </div>
-                {% endfor %}
-            </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+        <p>No uploads yet. <a href="/login">Login</a> to start uploading files.</p>
+    {% endif %}
+
+    <!-- NAV BUTTONS -->
+    <div class="button-row">
+
+        {% if session.logged_in %}
+            <a class="btn" href="/uploads">Upload new file</a>
+            <a class="btn secondary" href="/logout">Logout</a>
         {% else %}
-            <p>No uploads yet. <a href="/login">Login</a> to start uploading files.</p>
+            <a class="btn" href="/login">Login to Upload</a>
         {% endif %}
 
-        <div class="button-row">
-            {% if session.logged_in %}
-                <a class="btn" href="/uploads">Upload new file</a>
-                <a class="btn secondary" href="/logout">Logout</a>
-            {% else %}
-                <a class="btn" href="/login">Login to Upload</a>
-            {% endif %}
-        </div>
     </div>
+
+</div>
+
 </body>
 </html>
